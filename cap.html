@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Cap Store</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+        nav {
+            background-color: #444;
+        }
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+        nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .cap-item img {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Welcome to the Cap Store!</h1>
+    <p>Your one-stop shop for stylish caps</p>
+</header>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Cap Store</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#home">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#shop">Shop</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#orders">Orders</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#contact">Contact Us</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#about">About Us</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<section id="shop" class="container my-5">
+    <h2>Available Caps</h2>
+    <div class="row">
+        <!-- Example of an available cap item. This will repeat for each cap -->
+        <div class="col-md-3 mb-4 cap-item">
+            <div class="card">
+                <img src="India.jpeg" class="card-img-top" alt="Indian Cricket Team Cap">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Indian Cricket Team Cap</h5>
+                    <p class="card-text">$19.99</p>
+                    <button class="btn btn-primary" onclick="addToCart('Indian Cricket Team Cap', 19.99)">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 mb-4 cap-item">
+            <div class="card">
+                <img src="Baseball.avif" class="card-img-top" alt="Baseball Cap">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Baseball Cap</h5>
+                    <p class="card-text">$24.99</p>
+                    <button class="btn btn-primary" onclick="addToCart('Baseball Cap', 24.99)">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 mb-4 cap-item">
+            <div class="card">
+                <img src="flat.jpeg" class="card-img-top" alt="Blue Cap">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Flat Cap</h5>
+                    <p class="card-text">$17.99</p>
+                    <button class="btn btn-primary" onclick="addToCart('Flat Cap', 17.99)">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 mb-4 cap-item">
+            <div class="card">
+                <img src="Beanies.jpeg" class="card-img-top" alt="Green Cap">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Beanies</h5>
+                    <p class="card-text">$14.99</p>
+                    <button class="btn btn-primary" onclick="addToCart('Beanies', 14.99)">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 mb-4 cap-item">
+            <div class="card">
+                <img src="snapback.jpeg" class="card-img-top" alt="White Cap">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Snapback</h5>
+                    <p class="card-text">$22.99</p>
+                    <button class="btn btn-primary" onclick="addToCart('Snapback', 22.99)">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+        
+       
+        <!-- Add more caps here if needed -->
+    </div>
+</section>
+
+<section id="orders" class="container my-5">
+    <h2>Your Orders</h2>
+    <p>View and manage your orders here.</p>
+    <!-- Placeholder for orders -->
+    <table class="table table-bordered" id="ordersTable">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Cap Name</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Orders will appear here dynamically -->
+        </tbody>
+    </table>
+</section>
+
+<section id="contact" class="container my-5">
+    <h2>Contact Us</h2>
+    <form action="#" method="post">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+            <label for="message">Message</label>
+            <textarea class="form-control" id="message" name="message" rows="4" placeholder="Your message..." required></textarea>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Send Message">
+    </form>
+</section>
+
+<section id="about" class="container my-5">
+    <h2>About Us</h2>
+    <p>We are a dedicated team offering premium quality caps for all occasions. Whether you're into sports, fashion, or casual wear, we have something for you!</p>
+</section>
+
+<!-- Footer -->
+<footer>
+    <p>&copy; 2025 Cap Store. All rights reserved.</p>
+</footer>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    // Add item to the cart and create an order
+    function addToCart(capName, capPrice) {
+        // Get the current orders from localStorage
+        let orders = JSON.parse(localStorage.getItem('orders')) || [];
+
+        // Create a new order item
+        let orderId = orders.length + 1;
+        let order = {
+            orderId: `#${orderId.toString().padStart(3, '0')}`,
+            capName: capName,
+            quantity: 1,
+            totalPrice: capPrice,
+            status: 'Processing'
+        };
+
+        // Add the new order to the orders array
+        orders.push(order);
+
+        // Save the updated orders back to localStorage
+        localStorage.setItem('orders', JSON.stringify(orders));
+
+        // Update the orders table
+        updateOrdersTable();
+    }
+
+    // Function to update the orders table
+    function updateOrdersTable() {
+        let orders = JSON.parse(localStorage.getItem('orders')) || [];
+        let tableBody = document.getElementById('ordersTable').getElementsByTagName('tbody')[0];
+
+        // Clear the existing table
+        tableBody.innerHTML = '';
+
+        // Populate the table with the orders
+        orders.forEach(order => {
+            let row = tableBody.insertRow();
+            row.innerHTML = `
+                <td>${order.orderId}</td>
+                <td>${order.capName}</td>
+                <td>${order.quantity}</td>
+                <td>$${order.totalPrice}</td>
+                <td>${order.status}</td>
+            `;
+        });
+    }
+
+    // Update orders table on page load
+    window.onload = function() {
+        updateOrdersTable();
+    };
+</script>
+
+</body>
+</html>
