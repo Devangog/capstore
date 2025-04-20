@@ -195,6 +195,9 @@
 <script>
 // Modified addToCart function to handle quantity increase
 function addToCart(capName, capPrice) {
+    // Make sure capPrice is treated as a number
+    capPrice = parseFloat(capPrice);
+
     let orders = JSON.parse(localStorage.getItem('orders')) || [];
 
     // Check if the cap is already in the cart
@@ -233,7 +236,7 @@ function updateOrdersTable() {
             <td>${order.orderId}</td>
             <td>${order.capName}</td>
             <td>${order.quantity}</td>
-            <td>Rs.{order.totalPrice}</td>
+            <td>Rs. ${order.totalPrice.toFixed(2)}</td>
             <td>${order.status}</td>
         `;
     });
@@ -244,6 +247,7 @@ window.onload = function() {
     updateOrdersTable();
 };
 </script>
+
 
 
 </body>
