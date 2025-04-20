@@ -193,83 +193,86 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script>
-    // Modified addToCart function to handle quantity increase
-    function addToCart(capName, capPrice) {
-        let orders = JSON.parse(localStorage.getItem('orders')) || [];
+// Modified addToCart function to handle quantity increase
+function addToCart(capName, capPrice) {
+    let orders = JSON.parse(localStorage.getItem('orders')) || [];
 
-        // Check if the cap is already in the cart
-        let existingOrder = orders.find(order => order.capName === capName);
+    // Check if the cap is already in the cart
+    let existingOrder = orders.find(order => order.capName === capName);
 
-        if (existingOrder) {
-            // Increase quantity and update total price
-            existingOrder.quantity += 1;
-            existingOrder.totalPrice = existingOrder.quantity * capPrice;
-        } else {
-            // Create new order
-            let orderId = orders.length + 1;
-            let order = {
-                orderId: `#${orderId.toString().padStart(3, '0')}`,
-                capName: capName,
-                quantity: 1,
-                totalPrice: capPrice,
-                status: 'Processing'
-            };
-            orders.push(order);
-     }
+    if (existingOrder) {
+        // Increase quantity and update total price
+        existingOrder.quantity += 1;
+        existingOrder.totalPrice = existingOrder.quantity * capPrice;
+    } else {
+        // Create new order
+        let orderId = orders.length + 1;
+        let order = {
+            orderId: `#${orderId.toString().padStart(3, '0')}`,
+            capName: capName,
+            quantity: 1,
+            totalPrice: capPrice,
+            status: 'Processing'
+        };
+        orders.push(order);
+    }
 
-        localStorage.setItem('orders', JSON.stringify(orders));
-        updateOrdersTable();
-    }
+    localStorage.setItem('orders', JSON.stringify(orders));
+    updateOrdersTable();
+}
 
+// Function to update the orders table
+function updateOrdersTable() {
+    let orders = JSON.parse(localStorage.getItem('orders')) || [];
+    let tableBody = document.getElementById('ordersTable').getElementsByTagName('tbody')[0];
+    tableBody.innerHTML = '';
 
-    // Add delete and clear functionality
-    function updateOrdersTable() {
-        let orders = JSON.parse(localStorage.getItem('orders')) || [];
-        let tableBody = document.getElementById('ordersTable').getElementsByTagName('tbody')[0];
-        tableBody.innerHTML = '';
+    orders.forEach((order, index) => {
+        let row = tableBody.insertRow();
+        row.innerHTML = `
+            <td>${order.orderId}</td>
+            <td>${order.capName}</td>
+            <td>{order.quantity}</td>
+            <td>Rs.{order.totalPrice}</td>
+            <td>${order.status}</td>
+            <td><button onclick="deleteOrder(${index})" class="btn btn-sm btn-danger">Delete</button></td>
+        `;
+    });
 
-        orders.forEach((order, index) => {
-            let row = tableBody.insertRow();
-            row.innerHTML = `
-                <td>${order.orderId}</td>
-                <td>${order.capName}</td>
-                <td>{order.quantity}</td>
-                <td>Rs.{order.totalPrice}</td>
-                <td>${order.status}</td>
-                <td><button onclick="deleteOrder(${index})" class="btn btn-sm btn-danger">Delete</button></td>
-            `;
-        });
+    // Add a "Clear All Orders" button if there are orders
+    if (orders.length > 0 && !document.getElementById('clearOrdersBtn')) {
+        let clearBtn = document.createElement('button');
+        clearBtn.innerText = "Clear All Orders";
+        clearBtn.id = "clearOrdersBtn";
+        clearBtn.className = "btn btn-sm btn-warning mt-2";
+        clearBtn.onclick = clearAllOrders;
+        document.getElementById('ordersTable').parentElement.appendChild(clearBtn);
+    } else if (orders.length === 0) {
+        let oldBtn = document.getElementById('clearOrdersBtn');
+        if (oldBtn) oldBtn.remove();
+    }
+}
 
-        // Add a clear all button dynamically if there are orders
-        if (orders.length > 0 && !document.getElementById('clearOrdersBtn')) {
-            let clearBtn = document.createElement('button');
-            clearBtn.innerText = "Clear All Orders";
-            clearBtn.id = "clearOrdersBtn";
-            clearBtn.className = "btn btn-sm btn-warning mt-2";
-            clearBtn.onclick = clearAllOrders;
-            document.getElementById('ordersTable').parentElement.appendChild(clearBtn);
-        } else if (orders.length === 0) {
-            let oldBtn = document.getElementById('clearOrdersBtn');
-            if (oldBtn) oldBtn.remove();
-        }
-    }
+// Function to delete a specific order
+function deleteOrder(index) {
+    let orders = JSON.parse(localStorage.getItem('orders')) || [];
+    orders.splice(index, 1);
+    localStorage.setItem('orders', JSON.stringify(orders));
+    updateOrdersTable();
+}
 
-    function deleteOrder(index) {
-        let orders = JSON.parse(localStorage.getItem('orders')) || [];
-        orders.splice(index, 1);
-        localStorage.setItem('orders', JSON.stringify(orders));
-        updateOrdersTable();
-    }
+// Function to clear all orders
+function clearAllOrders() {
+    localStorage.removeItem('orders');
+    updateOrdersTable();
+}
 
-    function clearAllOrders() {
-        localStorage.removeItem('orders');
-        updateOrdersTable();
-    }
-
-    window.onload = function() {
-        updateOrdersTable();
-    };
+// Initialize the orders table on page load
+window.onload = function() {
+    updateOrdersTable();
+};
 </script>
+
 
 
 </body>
