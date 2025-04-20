@@ -233,8 +233,8 @@
             row.innerHTML = `
                 <td>${order.orderId}</td>
                 <td>${order.capName}</td>
-                <td>${order.quantity}</td>
-                <td>Rs.${order.totalPrice}</td>
+                <td>{order.quantity}</td>
+                <td>Rs.{order.totalPrice}</td>
                 <td>${order.status}</td>
                 <td><button onclick="deleteOrder(${index})" class="btn btn-sm btn-danger">Delete</button></td>
             `;
