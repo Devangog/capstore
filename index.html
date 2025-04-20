@@ -193,57 +193,83 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script>
-    // Add item to the cart and create an order
-    function addToCart(capName, capPrice) {
-        // Get the current orders from localStorage
-        let orders = JSON.parse(localStorage.getItem('orders')) || [];
+    // Modified addToCart function to handle quantity increase
+    function addToCart(capName, capPrice) {
+        let orders = JSON.parse(localStorage.getItem('orders')) || [];
 
-        // Create a new order item
-        let orderId = orders.length + 1;
-        let order = {
-            orderId: `#${orderId.toString().padStart(3, '0')}`,
-            capName: capName,
-            quantity: 1,
-            totalPrice: capPrice,
-            status: 'Processing'
-        };
+        // Check if the cap is already in the cart
+        let existingOrder = orders.find(order => order.capName === capName);
 
-        // Add the new order to the orders array
-        orders.push(order);
+        if (existingOrder) {
+            // Increase quantity and update total price
+            existingOrder.quantity += 1;
+            existingOrder.totalPrice = existingOrder.quantity * capPrice;
+        } else {
+            // Create new order
+            let orderId = orders.length + 1;
+            let order = {
+                orderId: `#${orderId.toString().padStart(3, '0')}`,
+                capName: capName,
+                quantity: 1,
+                totalPrice: capPrice,
+                status: 'Processing'
+            };
+            orders.push(order);
+        }
 
-        // Save the updated orders back to localStorage
-        localStorage.setItem('orders', JSON.stringify(orders));
+        localStorage.setItem('orders', JSON.stringify(orders));
+        updateOrdersTable();
+    }
 
-        // Update the orders table
-        updateOrdersTable();
-    }
+    // Add delete and clear functionality
+    function updateOrdersTable() {
+        let orders = JSON.parse(localStorage.getItem('orders')) || [];
+        let tableBody = document.getElementById('ordersTable').getElementsByTagName('tbody')[0];
+        tableBody.innerHTML = '';
 
-    // Function to update the orders table
-    function updateOrdersTable() {
-        let orders = JSON.parse(localStorage.getItem('orders')) || [];
-        let tableBody = document.getElementById('ordersTable').getElementsByTagName('tbody')[0];
+        orders.forEach((order, index) => {
+            let row = tableBody.insertRow();
+            row.innerHTML = `
+                <td>${order.orderId}</td>
+                <td>${order.capName}</td>
+                <td>${order.quantity}</td>
+                <td>Rs.${order.totalPrice}</td>
+                <td>${order.status}</td>
+                <td><button onclick="deleteOrder(${index})" class="btn btn-sm btn-danger">Delete</button></td>
+            `;
+        });
 
-        // Clear the existing table
-        tableBody.innerHTML = '';
+        // Add a clear all button dynamically if there are orders
+        if (orders.length > 0 && !document.getElementById('clearOrdersBtn')) {
+            let clearBtn = document.createElement('button');
+            clearBtn.innerText = "Clear All Orders";
+            clearBtn.id = "clearOrdersBtn";
+            clearBtn.className = "btn btn-sm btn-warning mt-2";
+            clearBtn.onclick = clearAllOrders;
+            document.getElementById('ordersTable').parentElement.appendChild(clearBtn);
+        } else if (orders.length === 0) {
+            let oldBtn = document.getElementById('clearOrdersBtn');
+            if (oldBtn) oldBtn.remove();
+        }
+    }
 
-        // Populate the table with the orders
-        orders.forEach(order => {
-            let row = tableBody.insertRow();
-            row.innerHTML = `
-                <td>${order.orderId}</td>
-                <td>${order.capName}</td>
-                <td>${order.quantity}</td>
-                <td>Rs.${order.totalPrice}</td>
-                <td>${order.status}</td>
-            `;
-        });
-    }
+    function deleteOrder(index) {
+        let orders = JSON.parse(localStorage.getItem('orders')) || [];
+        orders.splice(index, 1);
+        localStorage.setItem('orders', JSON.stringify(orders));
+        updateOrdersTable();
+    }
 
-    // Update orders table on page load
-    window.onload = function() {
-        updateOrdersTable();
-    };
+    function clearAllOrders() {
+        localStorage.removeItem('orders');
+        updateOrdersTable();
+    }
+
+    window.onload = function() {
+        updateOrdersTable();
+    };
 </script>
+
 
 </body>
 </html>
