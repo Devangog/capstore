@@ -193,22 +193,16 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script>
-// Modified addToCart function to handle quantity increase
 function addToCart(capName, capPrice) {
-    // Make sure capPrice is treated as a number
-    capPrice = parseFloat(capPrice);
-
+    capPrice = parseFloat(capPrice); // Ensures it's a number
     let orders = JSON.parse(localStorage.getItem('orders')) || [];
 
-    // Check if the cap is already in the cart
     let existingOrder = orders.find(order => order.capName === capName);
 
     if (existingOrder) {
-        // Increase quantity and update total price
         existingOrder.quantity += 1;
         existingOrder.totalPrice = existingOrder.quantity * capPrice;
     } else {
-        // Create new order
         let orderId = orders.length + 1;
         let order = {
             orderId: `#${orderId.toString().padStart(3, '0')}`,
@@ -224,7 +218,6 @@ function addToCart(capName, capPrice) {
     updateOrdersTable();
 }
 
-// Function to update the orders table
 function updateOrdersTable() {
     let orders = JSON.parse(localStorage.getItem('orders')) || [];
     let tableBody = document.getElementById('ordersTable').getElementsByTagName('tbody')[0];
@@ -242,11 +235,11 @@ function updateOrdersTable() {
     });
 }
 
-// Initialize the orders table on page load
 window.onload = function() {
     updateOrdersTable();
 };
 </script>
+
 
 
 
