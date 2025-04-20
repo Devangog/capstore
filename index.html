@@ -194,32 +194,32 @@
 
 <script>
     // Modified addToCart function to handle quantity increase
-    function addToCart(capName, capPrice, quantity) {
-    let orders = JSON.parse(localStorage.getItem('orders')) || [];
+    function addToCart(capName, capPrice) {
+        let orders = JSON.parse(localStorage.getItem('orders')) || [];
 
-    // Check if the cap is already in the cart
-    let existingOrder = orders.find(order => order.capName === capName);
+        // Check if the cap is already in the cart
+        let existingOrder = orders.find(order => order.capName === capName);
 
-    if (existingOrder) {
-        // Increase quantity and total price
-        existingOrder.quantity += quantity;
-        existingOrder.totalPrice = existingOrder.quantity * capPrice;
-    } else {
-        // Create new order
-        let orderId = orders.length + 1;
-        let order = {
-            orderId: `#${orderId.toString().padStart(3, '0')}`,
-            capName: capName,
-            quantity: quantity,
-            totalPrice: capPrice * quantity,
-            status: 'Processing'
-        };
-        orders.push(order);
+        if (existingOrder) {
+            // Increase quantity and update total price
+            existingOrder.quantity += 1;
+            existingOrder.totalPrice = existingOrder.quantity * capPrice;
+        } else {
+            // Create new order
+            let orderId = orders.length + 1;
+            let order = {
+                orderId: `#${orderId.toString().padStart(3, '0')}`,
+                capName: capName,
+                quantity: 1,
+                totalPrice: capPrice,
+                status: 'Processing'
+            };
+            orders.push(order);
+     }
+
+        localStorage.setItem('orders', JSON.stringify(orders));
+        updateOrdersTable();
     }
-
-    localStorage.setItem('orders', JSON.stringify(orders));
-    updateOrdersTable();
-}
 
 
     // Add delete and clear functionality
