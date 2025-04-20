@@ -193,55 +193,53 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script>
-function addToCart(capName, capPrice) {
-    capPrice = parseFloat(capPrice); // Ensures it's a number
-    let orders = JSON.parse(localStorage.getItem('orders')) || [];
+        function addToCart(capName, capPrice) {
+            capPrice = parseFloat(capPrice);
+            let orders = JSON.parse(localStorage.getItem('orders')) || [];
 
-    let existingOrder = orders.find(order => order.capName === capName);
+            let existingOrder = orders.find(order => order.capName === capName);
 
-    if (existingOrder) {
-        existingOrder.quantity += 1;
-        existingOrder.totalPrice = existingOrder.quantity * capPrice;
-    } else {
-        let orderId = orders.length + 1;
-        let order = {
-            orderId: `#${orderId.toString().padStart(3, '0')}`,
-            capName: capName,
-            quantity: 1,
-            totalPrice: capPrice,
-            status: 'Processing'
-        };
-        orders.push(order);
-    }
+            if (existingOrder) {
+                existingOrder.quantity += 1;
+                existingOrder.totalPrice = existingOrder.quantity * capPrice;
+            } else {
+                let maxId = orders.length > 0
+                    ? Math.max(...orders.map(order => parseInt(order.orderId.replace('#', ''))))
+                    : 0;
+                let nextId = maxId + 1;
 
-    localStorage.setItem('orders', JSON.stringify(orders));
-    updateOrdersTable();
-}
+                let order = {
+                    orderId: `#${nextId.toString().padStart(3, '0')}`,
+                    capName: capName,
+                    quantity: 1,
+                    totalPrice: capPrice,
+                    status: 'Processing'
+                };
+                orders.push(order);
+            }
 
-function updateOrdersTable() {
-    let orders = JSON.parse(localStorage.getItem('orders')) || [];
-    let tableBody = document.getElementById('ordersTable').getElementsByTagName('tbody')[0];
-    tableBody.innerHTML = '';
+            localStorage.setItem('orders', JSON.stringify(orders));
+            updateOrdersTable();
+        }
 
-    orders.forEach((order) => {
-        let row = tableBody.insertRow();
-        row.innerHTML = `
-            <td>${order.orderId}</td>
-            <td>${order.capName}</td>
-            <td>${order.quantity}</td>
-            <td>Rs. ${order.totalPrice.toFixed(2)}</td>
-            <td>${order.status}</td>
-        `;
-    });
-}
+        function updateOrdersTable() {
+            let orders = JSON.parse(localStorage.getItem('orders')) || [];
+            let tableBody = document.getElementById('ordersTable').querySelector('tbody');
+            tableBody.innerHTML = '';
 
-window.onload = function() {
-    updateOrdersTable();
-};
-</script>
+            orders.forEach(order => {
+                let row = tableBody.insertRow();
+                row.innerHTML = `
+                    <td>${order.orderId}</td>
+                    <td>${order.capName}</td>
+                    <td>${order.quantity}</td>
+                    <td>Rs. ${order.totalPrice.toFixed(2)}</td>
+                    <td>${order.status}</td>
+                `;
+            });
+        }
 
-
-
-
+        window.onload = updateOrdersTable;
+    </script>
 </body>
 </html>
