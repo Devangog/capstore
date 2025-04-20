@@ -221,7 +221,7 @@ function addToCart(capName, capPrice) {
     updateOrdersTable();
 }
 
-// Function to update the orders table (no delete/clear buttons)
+// Function to update the orders table
 function updateOrdersTable() {
     let orders = JSON.parse(localStorage.getItem('orders')) || [];
     let tableBody = document.getElementById('ordersTable').getElementsByTagName('tbody')[0];
@@ -232,7 +232,7 @@ function updateOrdersTable() {
         row.innerHTML = `
             <td>${order.orderId}</td>
             <td>${order.capName}</td>
-            <td>{order.quantity}</td>
+            <td>${order.quantity}</td>
             <td>Rs.{order.totalPrice}</td>
             <td>${order.status}</td>
         `;
@@ -244,6 +244,7 @@ window.onload = function() {
     updateOrdersTable();
 };
 </script>
+
 
 </body>
 </html>
